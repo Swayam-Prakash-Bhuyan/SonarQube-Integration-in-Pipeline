@@ -2,13 +2,17 @@
 
 This guide provides step-by-step instructions for installing Docker, setting up a SonarQube server using Docker, and configuring SonarQube analysis in Jenkins. SonarQube is a popular open-source platform for static code analysis that helps detect code quality issues and vulnerabilities in your software projects.
 
-```bash
+## Prequicite:
+Refer this to install some of the plugins and Jenkins declarative pipeline code
+https://github.com/Swayam-Prakash-Bhuyan/Jenkins-Pipeline-Deployment-On-Tomcat.git
+just exclude tomcat
+
+
 ## Step 1: Docker Installation
 
 Open a terminal.
 Run the following commands:
 
-```bash
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -20,28 +24,22 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo apt install docker-compose
 Restart the Docker service:
 
-bash
-Copy code
+
 sudo service docker restart
 Add your user to the docker group to run Docker commands without sudo:
 
-bash
-Copy code
 sudo usermod -aG docker $USER
 newgrp docker
 Adjust permissions for the Docker socket:
 
-bash
-Copy code
+
 sudo chmod 666 /var/run/docker.sock
 sudo systemctl restart docker
-bash
-Copy code
+
 ## Step 2: SonarQube Server Setup
 
 Run the following command to start the SonarQube server:
 
-```bash
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 Wait for the container to start. You can check the status using the docker ps command.
 
@@ -51,8 +49,7 @@ Use the default credentials to log in: Username = admin, Password = admin.
 
 After logging in, change the password to a secure one.
 
-bash
-Copy code
+
 ## Step 3: Custom Quality Profile Setup
 
 Inside SonarQube, navigate to "Administration" > "Quality Profiles".
@@ -63,7 +60,7 @@ Select the relevant programming language (Java or TypeScript) and customize the 
 
 Save the profile.
 
-```bash
+
 ## Step 4: Jenkins Plugin Installation
 
 Go to your Jenkins instance.
@@ -74,7 +71,7 @@ Search and select the following plugins to install: Eclipse Temurin Installer, O
 
 Click "Install without restart" to install the selected plugins.
 
-```bash
+
 ## Step 5: SonarQube Configuration in Jenkins
 
 In Jenkins, go to "Manage Jenkins" > "Configure System".
@@ -93,12 +90,12 @@ In Jenkins, click on "Add" next to "Server Authentication Token" and enter the c
 
 Save the configuration.
 
-```bash
+    
 ## Step 6: SonarQube Analysis in Jenkins Pipeline
 
 Assuming you already have a Jenkins pipeline, add the following stage after the "Compile" stage:
 
-```groovy
+groovy
 stage('SonarQube Analysis') {
     steps {
         withSonarQubeEnv('sonar-server') {
@@ -116,7 +113,5 @@ Save and run your Jenkins pipeline to trigger SonarQube analysis.
 
 Remember to adjust the configurations and pipeline code to match your specific setup and requirements.
 
-vbnet
-Copy code
 
 That's it! You have now successfully installed Docker, set up a SonarQube server, and configured SonarQube analysis in Jenkins. Follow the instructions provided to adapt the steps to your specific project and environment. Happy coding and analyzing your code quality!
